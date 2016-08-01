@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		D877173F1D4FBEDE005807F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D877173E1D4FBEDE005807F9 /* AppDelegate.swift */; };
-		D87717411D4FBEDE005807F9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D87717401D4FBEDE005807F9 /* GameScene.sks */; };
 		D87717431D4FBEDE005807F9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87717421D4FBEDE005807F9 /* GameScene.swift */; };
 		D87717451D4FBEDE005807F9 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87717441D4FBEDE005807F9 /* GameViewController.swift */; };
 		D87717481D4FBEDE005807F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D87717461D4FBEDE005807F9 /* Main.storyboard */; };
 		D877174A1D4FBEDE005807F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D87717491D4FBEDE005807F9 /* Assets.xcassets */; };
 		D877174D1D4FBEDE005807F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D877174B1D4FBEDE005807F9 /* LaunchScreen.storyboard */; };
+		D87717551D4FBF40005807F9 /* ScrollingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87717541D4FBF40005807F9 /* ScrollingList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D877173B1D4FBEDE005807F9 /* Scrolling List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scrolling List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D877173E1D4FBEDE005807F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D87717401D4FBEDE005807F9 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		D87717421D4FBEDE005807F9 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		D87717441D4FBEDE005807F9 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		D87717471D4FBEDE005807F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D87717491D4FBEDE005807F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D877174C1D4FBEDE005807F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D877174E1D4FBEDE005807F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D87717541D4FBF40005807F9 /* ScrollingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +59,8 @@
 			isa = PBXGroup;
 			children = (
 				D877173E1D4FBEDE005807F9 /* AppDelegate.swift */,
-				D87717401D4FBEDE005807F9 /* GameScene.sks */,
 				D87717421D4FBEDE005807F9 /* GameScene.swift */,
+				D87717541D4FBF40005807F9 /* ScrollingList.swift */,
 				D87717441D4FBEDE005807F9 /* GameViewController.swift */,
 				D87717461D4FBEDE005807F9 /* Main.storyboard */,
 				D87717491D4FBEDE005807F9 /* Assets.xcassets */,
@@ -128,7 +128,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D87717411D4FBEDE005807F9 /* GameScene.sks in Resources */,
 				D877174D1D4FBEDE005807F9 /* LaunchScreen.storyboard in Resources */,
 				D877174A1D4FBEDE005807F9 /* Assets.xcassets in Resources */,
 				D87717481D4FBEDE005807F9 /* Main.storyboard in Resources */,
@@ -145,6 +144,7 @@
 				D87717431D4FBEDE005807F9 /* GameScene.swift in Sources */,
 				D87717451D4FBEDE005807F9 /* GameViewController.swift in Sources */,
 				D877173F1D4FBEDE005807F9 /* AppDelegate.swift in Sources */,
+				D87717551D4FBF40005807F9 /* ScrollingList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
