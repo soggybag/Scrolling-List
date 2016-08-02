@@ -9,18 +9,23 @@
 import SpriteKit
 
 
+// MARK: - Scrolling list protocol
 
 protocol ScrollListDelegate {
     func selectedRowNode(node: SKSpriteNode)
 }
 
 
+// MARK: - Scrolling list alignment modes
 
 enum ScrollListHorizontalAlignmentMode {
     case Center
     case Left
     case Right
 }
+
+
+
 
 
 class ScrollingList: SKSpriteNode {
@@ -38,6 +43,7 @@ class ScrollingList: SKSpriteNode {
     var scrollMax: CGFloat
     
     var delegate: ScrollListDelegate?
+    
     
     
     // MARK: - Init
@@ -134,7 +140,7 @@ class ScrollingList: SKSpriteNode {
     
     // MARK: - Update
     
-    
+    // TODO: Make the list spring and coast...
     
     
     
@@ -144,14 +150,15 @@ class ScrollingList: SKSpriteNode {
     func addNode(node: SKSpriteNode) {
         scrollNode.addChild(node)
         rows.append(node)
+        print(node.frame)
         setupRows()
     }
     
     func setupRows() {
-        var totalY: CGFloat = -(rows[0].size.height / 2 + verticalMargin)
+        var totalY: CGFloat = 0 // -(rows[0].size.height / 2 + verticalMargin)
         for row in rows {
             positionRowHorizontal(row)
-            row.position.y = totalY
+            row.position.y = totalY - row.size.height / 2
             totalY -= row.size.height + verticalMargin
         }
         

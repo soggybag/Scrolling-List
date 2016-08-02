@@ -42,43 +42,97 @@ import SpriteKit
 class GameScene: SKScene, ScrollListDelegate {
     
     let list: ScrollingList
+    let label: SKLabelNode
     
     
     // MARK: - Scrolling Delegate
     
+    // SCrollingList sends it's delegate this message along with the node that 
+    // tapped when a tap occurs.
+    
     func selectedRowNode(node: SKSpriteNode) {
-        // be sure to check for nil here!
+        // Check the node name to decide what to do here...
         print("Selected Row: \(node.name)")
+        if node.name != nil {
+            label.text = node.name
+        }
     }
     
     
     
+    // MARK: - Init
+    
     override init(size: CGSize) {
+        
+        // Create a ScrollingList of size
         list = ScrollingList(size: CGSize(width: 300, height: 400))
+        // Set the Alignment mode: .Left, .Right, .Center
         list.horizontalAlignmentMode = .Left
+        // Set the background Color
         list.color = UIColor.brownColor()
         
+        // This label is used to show the effect of tapping a row
+        label = SKLabelNode(fontNamed: "Helvetica")
+        
+        // Must call super.init()
         super.init(size: size)
         
-        list.delegate = self
-        addChild(list)
-        list.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        
-        let rowSize = CGSize(width: 120, height: 40)
-        
-        for i in 0...19 {
-            let hue: CGFloat = 1 / 20 * CGFloat(i)
-            let color = UIColor(hue: hue, saturation: 0.8, brightness: 0.8, alpha: 1)
-            let sprite = SKSpriteNode(color: color, size: rowSize)
-            sprite.name = "row-\(i)"
-            // 11sprite.userInteractionEnabled = true
-            list.addNode(sprite)
-        }
+        // Set up the label and the list
+        setupLabel()
+        setupList()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    
+    // MARK: - Setup 
+    
+    func setupLabel() {
+        // Setup Label
+        addChild(label)
+        label.position = CGPoint(x: size.width / 2, y: size.height / 2 - 250)
+        label.text = "????"
+    }
+    
+    func setupList() {
+        // Assign this class as the delegate for the List, for tap on rows.
+        list.delegate = self
+        // Add the list to this scene
+        addChild(list)
+        // Position the list. THe reference point is in the center.
+        list.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        
+        // Generate some rows to appear in the list
+        // The size for each row. Comment the two lines below to make all of the rows the same size.
+        var rowSize = CGSize(width: 300, height: 40)
+        
+        // Make 20 rows.
+        for i in 0...19 {
+            // Set the color of a row
+            let hue: CGFloat = 1 / 20 * CGFloat(i)
+            let color = UIColor(hue: hue, saturation: 0.8, brightness: 0.8, alpha: 1)
+            
+            // Randomize the size of a row
+            rowSize.height = CGFloat(arc4random() % 40) + 30
+            rowSize.width = CGFloat(arc4random() % 60) + 240
+            
+            // Make a Sprite node row
+            let sprite = SKSpriteNode(color: color, size: rowSize)
+            // Give the row a name. This will help with handling taps on a row.
+            sprite.name = "row-\(i)"
+            
+            // Add the row to the list
+            list.addNode(sprite)
+        }
+
+    }
+    
+    
+    
+    // MARK: - View Lifecycle
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -88,29 +142,25 @@ class GameScene: SKScene, ScrollListDelegate {
     
     
     
+    // MARK: - Touches
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
         
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!
-        let location = touch.locationInNode(self)
-        let node = nodeAtPoint(location)
+        // 
         
-        print(node.name)
     }
+    
+    
+    
+    // MARK: - Update
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
     
-    
-    
-    // MARK: - Scrolling List Delegate 
-    
-    func scrollingListRowSelected(row: Int) {
-        print("Scrolling List says you selected row: \(row)")
-    }
-    
+   
 }
