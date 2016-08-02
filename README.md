@@ -20,6 +20,34 @@ Add sprite nodes as scrolling elements:
  
     list.addNode(sprite)
  
+Set the Alignment mode: .Left, .Right, .Center
+
+    list.horizontalAlignmentMode = .Left
+
+Set the background Color
+
+    list.color = UIColor.brownColor()
+
+Handle taps on rows by setting the delegate and implementing the ScrollingListdelegate protocol.
+
+Declare the delegate at the top of your GameScene:
+
+    class GameScene: SKScene, ScrollListDelegate
+
+Assign this class as the delegate for the List.
+
+    list.delegate = self
+
+Implement the protocol: 
+
+    func selectedRowNode(node: SKSpriteNode) {
+        // Check the node name to decide what to do here...
+        print("Selected Row: \(node.name)")
+        if node.name != nil {
+            label.text = node.name
+        }
+    }
+
 ScrollingList sends a selectedRowNode() message to it's delegate when a row is selected. 
 Note that dragging and tapping both involve touching a row. To differentiate between 
 tapping a row and scrolling the list, the list measures the distance from the start of a drag, 
