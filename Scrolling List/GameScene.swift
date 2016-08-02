@@ -47,7 +47,7 @@ class GameScene: SKScene, ScrollListDelegate {
     
     // MARK: - Scrolling Delegate
     
-    // SCrollingList sends it's delegate this message along with the node that 
+    // ScrollingList sends it's delegate this message along with the node that
     // tapped when a tap occurs.
     
     func selectedRowNode(node: SKSpriteNode) {
