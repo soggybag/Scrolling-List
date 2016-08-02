@@ -8,35 +8,51 @@
 
 import SpriteKit
 
-class ScrollingList: SKNode {
+
+
+protocol ScrollListDelegate {
+    func selectedRowNode(node: SKSpriteNode)
+}
+
+
+
+enum ScrollListHorizontalAlignmentMode {
+    case Center
+    case Left
+    case Right
+}
+
+
+class ScrollingList: SKSpriteNode {
     
     // MARK: - Properties
     
     let scrollNode: SKNode
-    let size: CGSize
     var rows = [SKSpriteNode]()
-    var touchPosition = CGPointZero
+    var touchY: CGFloat = 0
+    let cropNode: SKCropNode
+    var horizontalAlignmentMode: ScrollListHorizontalAlignmentMode = .Center
+    var verticalMargin: CGFloat = 5
+    var scrollingListHeight: CGFloat = 0
+    var scrollMin: CGFloat
+    var scrollMax: CGFloat
+    
+    var delegate: ScrollListDelegate?
     
     
     // MARK: - Init
     
     init(size: CGSize) {
-        self.size = size
         scrollNode = SKNode()
+        cropNode = SKCropNode()
+        scrollMin = size.height / 2
+        scrollMax = size.height / -2
         
-        super.init()
+        super.init(texture: nil, color: UIColor.redColor(), size: size)
         
-        
-        addChild(scrollNode)
-        
-        userInteractionEnabled = true
-        
-        for i in 1...50 {
-            let hue: CGFloat = 1 / 50 * CGFloat(i)
-            addRow(UIColor(hue: hue, saturation: 0.8, brightness: 0.8, alpha: 1))
-        }
-        
-        setupRows()
+        setup()
+        setupScrollNode()
+        setupCropNode()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,46 +61,79 @@ class ScrollingList: SKNode {
     
     
     
+    // MARK: - Setup 
+    
+    func setup() {
+        userInteractionEnabled = true
+    }
+    
+    func setupScrollNode() {
+        scrollNode.position.y = scrollMin
+    }
+    
+    func setupCropNode() {
+        let mask = SKSpriteNode(color: UIColor.orangeColor(), size: size)
+        cropNode.maskNode = mask
+        addChild(cropNode)
+        cropNode.addChild(scrollNode)
+    }
+    
+    
+    
     
     // MARK: - Touch
     
-    // FIXME: Scroll jumps to top
+    var previousY: CGFloat = 0
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         //
-        print("List touches began")
         let touch = touches.first!
-        let location = touch.locationInNode(scrollNode)
-        touchPosition = location
+        let location = touch.locationInNode(self)
+        
+        touchY = location.y
+        previousY = scrollNode.position.y
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         //
-        
-        // TODO: Add limits
-        print("List touches moved")
         let touch = touches.first!
         let location = touch.locationInNode(self)
         
-        var y = location.y - touchPosition.y
+        var y = location.y - touchY + previousY // + scrollNode.position.y
         
-        print(size.height)
-        print(size.height - CGFloat(rows.count) * 40)
-        
-        if y < 0 {
-            y = 0
-        } else if y > CGFloat(rows.count) * 40 - size.height {
-            y = CGFloat(rows.count) * 40 - size.height
+        if y < scrollMin {
+            y = scrollMin
+        } else if y > scrollMax {
+            y = scrollMax
         }
-        
         
         scrollNode.position.y = y
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         //
-        print("List touches ended")
+        print("Touches ended at Scrolling List")
+        
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
+        
+        let dy = abs(location.y - touchY)
+        
+        if dy > 10 { return }
+        
+        let rowNode = nodeAtPoint(location) as? SKSpriteNode
+        
+        guard let delegate = delegate, let node = rowNode else {
+            return
+        }
+        
+        delegate.selectedRowNode(node)
     }
+    
+    
+    
+    // MARK: - Update
+    
     
     
     
@@ -92,18 +141,38 @@ class ScrollingList: SKNode {
     
     // MARK: - Utility Methods
     
-    func addRow(color: UIColor) {
-        let rowSize = CGSize(width: size.width, height: 40)
-        let row = SKSpriteNode(color: color, size: rowSize)
-        row.anchorPoint = CGPoint(x: 0, y: 1)
-        scrollNode.addChild(row)
-        rows.append(row)
+    func addNode(node: SKSpriteNode) {
+        scrollNode.addChild(node)
+        rows.append(node)
+        setupRows()
     }
     
     func setupRows() {
-        for i in 0 ..< rows.count {
-            rows[i].position.y = CGFloat(i) * -40
-            print(rows[i].position)
+        var totalY: CGFloat = -(rows[0].size.height / 2 + verticalMargin)
+        for row in rows {
+            positionRowHorizontal(row)
+            row.position.y = totalY
+            totalY -= row.size.height + verticalMargin
+        }
+        
+        scrollingListHeight = -totalY + rows.last!.size.height + verticalMargin
+        
+        setScrollLimits()
+    }
+    
+    func setScrollLimits() {
+        scrollMin = size.height / 2
+        scrollMax = scrollingListHeight - size.height // - scrollingListHeight // + scrollMin
+    }
+    
+    func positionRowHorizontal(row: SKSpriteNode) {
+        switch horizontalAlignmentMode {
+        case .Center:
+            row.position.x = 0
+        case .Left:
+            row.position.x = size.width / -2 + row.size.width / 2
+        case .Right:
+            row.position.x = size.width / 2 - row.size.width / 2
         }
     }
 }
